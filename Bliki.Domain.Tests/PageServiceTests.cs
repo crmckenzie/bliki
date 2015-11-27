@@ -69,13 +69,13 @@ namespace Bliki.Domain.Tests
 
             // Then
             Assert.That(page.Links, Has.Count.EqualTo(1));
-            Assert.That(page.Body, Does.Contain("[[Another Page]]"));
 
             var link = page.Links.First();
             Assert.That(link.Title, Is.EqualTo("Another Page"));
             Assert.That(link.DisplayText, Is.EqualTo("Another Page"));
             Assert.That(link.PageId, Is.EqualTo(Guid.Empty));
             Assert.That(link.Id, Is.Not.EqualTo(Guid.Empty));
+            Assert.That(page.Body, Does.Contain($"{{{{{link.Id}}}}}"));
         }
 
         [Test]

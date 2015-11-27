@@ -24,7 +24,7 @@ namespace Bliki.Domain
 
         public string Render(string body)
         {
-            return body.Replace(OriginalLinkText, Render());
+            return body.Replace(NormalizedLinkText(), Render());
         }
 
         public string Render()
@@ -39,10 +39,7 @@ namespace Bliki.Domain
 
         public string NormalizedLinkText()
         {
-            if (PageId != Guid.Empty)
-                return $"{{{{{Id}}}}}";
-
-            return OriginalLinkText;
+            return $"{{{{{Id}}}}}";
         }
     }
 }
