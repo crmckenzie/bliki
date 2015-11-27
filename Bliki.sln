@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bliki", "Bliki\Bliki.csproj", "{B69C8E14-A4B1-4797-8CAE-77E4ED8C0C0E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{040763C2-EFDC-4F07-AD88-F30E37C14B08}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\AzureVMPublishModule.psm1 = PublishScripts\AzureVMPublishModule.psm1
+		PublishScripts\Publish-WebApplicationVM.ps1 = PublishScripts\Publish-WebApplicationVM.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{9F0691C3-1258-4AD7-8014-05469BF5A849}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Configurations\Bliki-WAWS-dev.json = PublishScripts\Configurations\Bliki-WAWS-dev.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bliki.IntegrationTests", "Bliki.IntegrationTests\Bliki.IntegrationTests.csproj", "{5F6353A7-060B-4926-BA72-7D7197A3B339}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bliki.Domain", "Bliki.Domain\Bliki.Domain.csproj", "{3977C963-42A2-48EB-B045-A5A04A59105E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bliki.Domain.Tests", "Bliki.Domain.Tests\Bliki.Domain.Tests.csproj", "{1D6B1A00-EFF6-40D5-ADD4-14DFDE897CFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B69C8E14-A4B1-4797-8CAE-77E4ED8C0C0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B69C8E14-A4B1-4797-8CAE-77E4ED8C0C0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B69C8E14-A4B1-4797-8CAE-77E4ED8C0C0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B69C8E14-A4B1-4797-8CAE-77E4ED8C0C0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F6353A7-060B-4926-BA72-7D7197A3B339}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F6353A7-060B-4926-BA72-7D7197A3B339}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F6353A7-060B-4926-BA72-7D7197A3B339}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F6353A7-060B-4926-BA72-7D7197A3B339}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3977C963-42A2-48EB-B045-A5A04A59105E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3977C963-42A2-48EB-B045-A5A04A59105E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3977C963-42A2-48EB-B045-A5A04A59105E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3977C963-42A2-48EB-B045-A5A04A59105E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D6B1A00-EFF6-40D5-ADD4-14DFDE897CFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D6B1A00-EFF6-40D5-ADD4-14DFDE897CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D6B1A00-EFF6-40D5-ADD4-14DFDE897CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D6B1A00-EFF6-40D5-ADD4-14DFDE897CFB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9F0691C3-1258-4AD7-8014-05469BF5A849} = {040763C2-EFDC-4F07-AD88-F30E37C14B08}
+	EndGlobalSection
+EndGlobal
