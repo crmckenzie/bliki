@@ -34,7 +34,9 @@ namespace Bliki.Domain
         public void Save(WikiPage page)
         {
             page.Id = Guid.NewGuid();
-            page.Links = IdentifyWikiLinks(page);
+
+            var newLinks = IdentifyWikiLinks(page);
+            page.Links.AddRange(newLinks);
             ReplaceLinkText(page);
             this.PageStore[page.Title] = page;
         }

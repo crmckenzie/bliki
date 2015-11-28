@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using Bliki.Middleware;
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(Bliki.Startup))]
@@ -9,6 +10,7 @@ namespace Bliki
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            app.Use<LogMiddleware>();
         }
     }
 }
