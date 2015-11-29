@@ -5,16 +5,19 @@ using System.Web;
 using System.Web.Mvc;
 using Bliki.Domain;
 using Bliki.Models.Wiki;
+using MarkdownSharp;
 
 namespace Bliki.Controllers
 {
     public class WikiController : Controller
     {
         private readonly PageService _pageService;
+        private readonly Markdown _markdown;
 
-        public WikiController(PageService pageService)
+        public WikiController(PageService pageService, Markdown markdown)
         {
             _pageService = pageService;
+            _markdown = markdown;
         }
 
         protected override void HandleUnknownAction(string actionName)
@@ -30,11 +33,11 @@ namespace Bliki.Controllers
             if (!string.IsNullOrWhiteSpace(id))
             {
                 var wikiPage = this._pageService.Get(id);
+                var transform = _markdown.Transform(wikiPage.Body);
                 var model = new WikiPageViewModel()
                 {
-                    Body = wikiPage.Render(),
+                    Body = transform,
                     Title = wikiPage.Title,
-                    PageId = wikiPage.Id
                 };
                 return View(model);
             }
@@ -47,6 +50,34 @@ namespace Bliki.Controllers
             return View(emptyModel);
         }
 
+        [HttpGet]
+        public ActionResult Edit(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentOutOfRangeException("Page title is required.");
+
+            var wikiPage = this._pageService.Get(id);
+            var model = new WikiPageViewModel()
+            {
+                Body = wikiPage.Body,
+                Title = wikiPage.Title,
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(WikiPageViewModel viewModel)
+        {
+            var page = new WikiPage()
+            {
+                Body = viewModel.Body,
+                Title = viewModel.Title,
+            };
+
+            this._pageService.Save(page);
+
+            return RedirectToAction("Index", new {id = page.Title});
+        }
 
     }
 }

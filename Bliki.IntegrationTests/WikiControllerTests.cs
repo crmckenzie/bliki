@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using Bliki.Controllers;
 using Bliki.Domain;
 using Bliki.Models.Wiki;
+using MarkdownSharp;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Bliki.IntegrationTests
@@ -17,15 +19,21 @@ namespace Bliki.IntegrationTests
         [SetUp]
         public void BeforeEach()
         {
-            this.PageService = new PageService();
-            this.Subject = new WikiController(this.PageService);
+            this.PageService = Substitute.For<PageService>();
+            this.Subject = new WikiController(this.PageService, new Markdown());
         }
 
         public WikiController Subject { get; set; }
 
         [Test]
-        public void Index_WhenPageDoesNotExist()
+        public void Index()
         {
+            // Given
+            this.PageService.Get("Some page").Returns(new WikiPage()
+            {
+                Title = "Some Title",
+                Body = "Some body",
+            });
 
             //When
             var result = this.Subject.Index("Some page");
@@ -37,13 +45,13 @@ namespace Bliki.IntegrationTests
             Assert.That(viewResult.Model, Is.InstanceOf<WikiPageViewModel>());
 
             var viewModel = viewResult.Model as WikiPageViewModel;
-            Assert.That(viewModel.Title, Is.EqualTo("Some page"));
-            Assert.That(viewModel.Body, Is.Null.Or.Empty);
-            Assert.That(viewModel.PageId, Is.EqualTo(Guid.Empty));
+            Assert.That(viewModel.Title, Is.EqualTo("Some Title"));
+            Assert.That(viewModel.Body, Is.EqualTo("Some body"));
         }
 
+
         [Test]
-        public void Index_WhenPageExists()
+        public void Edit()
         {
             //Given
             var wikiPage = new WikiPage()
@@ -51,55 +59,41 @@ namespace Bliki.IntegrationTests
                 Title = "Some page",
                 Body = "Some body text",
             };
-            this.PageService.Save(wikiPage);
+            this.PageService.Get("Some page").Returns(wikiPage);
 
             // When
-            var result = this.Subject.Index("Some page");
+            var result = this.Subject.Edit("Some page");
             var viewResult = result as ViewResult;
             Assert.That(viewResult.Model, Is.InstanceOf<WikiPageViewModel>());
 
             var viewModel = viewResult.Model as WikiPageViewModel;
             Assert.That(viewModel.Title, Is.EqualTo(wikiPage.Title));
             Assert.That(viewModel.Body, Is.EqualTo(wikiPage.Body));
-            Assert.That(viewModel.PageId, Is.EqualTo(wikiPage.Id));
-
         }
 
         [Test]
-        public void Index_PageIsRendered()
+        public void Edit_Post()
         {
             //Given
-            var wikiPage = new WikiPage()
+            var viewModel = new WikiPageViewModel()
             {
-                Title = "Some page",
-                Body = "Some body text {{548183d0-ab34-446b-ac01-1d415dd34793}}",
+                Body = "Some body text",
+                Title = "Some title",
             };
-            wikiPage.Links = new List<WikiPageLink>()
-            {
-                new WikiPageLink(wikiPage)
-                {
-                    DisplayText = "Display Text",
-                    Title = "Some other page",
-                    PageId = Guid.NewGuid(),
-                    Id = new Guid("548183d0-ab34-446b-ac01-1d415dd34793"),
-                    OriginalLinkText = "[[Some other page]]"
-                }
-            };
-
-            this.PageService.Save(wikiPage);
 
             // When
-            var result = this.Subject.Index("Some page");
-            var viewResult = result as ViewResult;
-            var viewModel = viewResult.Model as WikiPageViewModel;
+            var result = this.Subject.Edit(viewModel);
 
-            Assert.That(viewModel.Body, Is.EqualTo("Some body text [Display Text](Some other page)"));
+            // Then
+            this.PageService.Received().Save(Arg.Is<WikiPage>(page => page.Body == viewModel.Body && page.Title == viewModel.Title));
+            Assert.That(result, Is.InstanceOf<RedirectToRouteResult>());
+            var redirect = (result as RedirectToRouteResult);
+            Assert.That(redirect.RouteName, Is.EqualTo("Index"));
+            Assert.That(redirect.RouteValues["id"], Is.EqualTo("Some title"));
         }
+
 
         public PageService PageService { get; set; }
     }
-
-
-
 
 }

@@ -1,7 +1,14 @@
-﻿@model dynamic
-
+﻿@model Bliki.Models.Wiki.WikiPageViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+<h1>@Model.Title</h1>
+<div class="container">
+    <div class="row">
+        @Html.ActionLink("Edit", "Edit", new {id = Model.Title})
+    </div>
+    <div class="col-md-12">
+        @Html.Raw(Model.Body)
+    </div>
+</div>
